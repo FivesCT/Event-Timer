@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<!--
+Event Timer
+
+Original concept and implementation by Monkey9.
+
+This version is maintained by the community to keep event
+schedules accurate and the tool available for everyone.
+Please preserve this attribution if you modify or redistribute
+the project.
+
+Thank you, Monkey9, for creating the original Event Timer.
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Event Timer</title>
+<script defer src="https://cloud.umami.is/script.js" data-website-id=""></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script>
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
+  
+<style>*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}:root{--bg:#0c0c0f;--surface:#141418;--surface-2:#1c1c22;--border:#2a2a33;--text:#e8e6e3;--text-dim:#7a7880;--crimson:#e03e4a;--crimson-dim:rgba(224,62,74,.12);--dragon:#c48a2a;--dragon-dim:rgba(196,138,42,.12);--active-green:#50dc78;--active-green-dim:rgba(80,220,120,.08)}body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-height:100dvh;-webkit-font-smoothing:antialiased}.container{max-width:480px;margin:0 auto;padding:1.5rem 1.25rem 3rem}header{text-align:center;margin-bottom:1.25rem}h1{font-size:1rem;font-weight:500;letter-spacing:.06em;color:var(--text-dim);text-transform:uppercase}.next-eta{text-align:center;margin-bottom:1rem;padding:.6rem .85rem;background:var(--surface);border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;gap:.5rem;flex-wrap:wrap}.next-eta .ne-label{font-size:.7rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:.05em}.next-eta .ne-name{font-size:.82rem;font-weight:500}.next-eta .ne-dot{width:6px;height:6px;border-radius:50%;display:inline-block}.next-eta .ne-dot.c{background:var(--crimson)}.next-eta .ne-dot.d{background:var(--dragon)}.next-eta .ne-cd{font-family:'DM Mono',monospace;font-size:.95rem;letter-spacing:.03em}.next-eta .ne-cd.c{color:var(--crimson)}.next-eta .ne-cd.d{color:var(--dragon)}.next-eta.is-live .ne-cd{color:var(--active-green)!important}.live-banner{border-radius:10px;padding:.75rem 1rem;margin-bottom:1rem;display:none;flex-direction:column;gap:.5rem;transition:opacity .3s}.live-banner.visible{display:flex}.live-banner-item{display:flex;align-items:center;justify-content:space-between;gap:.5rem;border-radius:8px;padding:.6rem .85rem}.live-banner-item.crimson-item{background:var(--crimson-dim);border:1px solid rgba(224,62,74,.25)}.live-banner-item.dragon-item{background:var(--dragon-dim);border:1px solid rgba(196,138,42,.25)}.live-left{display:flex;align-items:center;gap:.5rem}.live-pulse{width:8px;height:8px;border-radius:50%;animation:pulse 1.4s ease-in-out infinite;flex-shrink:0}.crimson-item .live-pulse{background:var(--crimson);box-shadow:0 0 6px 2px var(--crimson)}.dragon-item .live-pulse{background:var(--dragon);box-shadow:0 0 6px 2px var(--dragon)}.live-name{font-weight:500;font-size:.85rem}.live-tag{font-family:'DM Mono',monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.06em;padding:.15rem .4rem;border-radius:3px;color:var(--active-green);background:var(--active-green-dim);margin-left:.3rem}.live-countdown{font-family:'DM Mono',monospace;font-size:.82rem;color:var(--text-dim);white-space:nowrap}.tz-selector{margin-bottom:1.75rem}.tz-selector select{width:100%;padding:.6rem 1rem;font-family:'DM Mono',monospace;font-size:.78rem;background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:8px;outline:none;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a7880' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 1rem center;transition:border-color .2s}.tz-selector select:focus{border-color:#555}.time-info{text-align:center;margin-bottom:1rem}.time-info .local{font-family:'DM Mono',monospace;font-size:1.65rem;letter-spacing:.03em}.time-info .date{font-size:.8rem;color:var(--text-dim);margin-top:.15rem}.time-info .utc{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--text-dim);margin-top:.4rem;display:inline-block;background:var(--surface);padding:.2rem .65rem;border-radius:4px;letter-spacing:.03em}.clock-wrap{display:flex;justify-content:center;margin-bottom:2rem}.clock-box{width:260px;height:260px}.clock-svg{width:100%;height:100%}.table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden}.ev-table{width:100%;border-collapse:collapse}.ev-table thead th{font-size:.65rem;font-weight:500;text-transform:uppercase;letter-spacing:.07em;color:var(--text-dim);padding:.65rem .7rem;text-align:left;background:var(--surface-2);border-bottom:1px solid var(--border)}.ev-table thead th:last-child{text-align:right}.ev-table tbody tr{border-bottom:1px solid var(--border);transition:background .2s}.ev-table tbody tr:last-child{border-bottom:none}.ev-table td{padding:.6rem .7rem;vertical-align:middle;font-size:.8rem}.ev-table td:last-child{text-align:right}.name-cell{display:flex;align-items:center;gap:.4rem;font-weight:450;white-space:nowrap}.dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}.dot.c{background:var(--crimson)}.dot.d{background:var(--dragon)}tr.is-active .dot{animation:pulse 1.4s ease-in-out infinite}tr.is-active .dot.c{box-shadow:0 0 5px 2px var(--crimson)}tr.is-active .dot.d{box-shadow:0 0 5px 2px var(--dragon)}@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}.badge{font-family:'DM Mono',monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.05em;padding:.12rem .35rem;border-radius:3px;margin-left:.35rem;color:var(--active-green);background:var(--active-green-dim)}.window-cell{font-family:'DM Mono',monospace;font-size:.74rem;color:var(--text-dim);white-space:nowrap;}.eta-cell{font-family:'DM Mono',monospace;font-size:.82rem;letter-spacing:.02em;white-space:nowrap;}.eta-cell.c{color:var(--crimson)}.eta-cell.d{color:var(--dragon)}tr.is-active .eta-cell{color:var(--active-green)!important}tr.is-active.cr{background:var(--crimson-dim)}tr.is-active.dr{background:var(--dragon-dim)}.eta-label{font-size:.6rem;color:var(--text-dim);display:block;margin-bottom:.1rem;text-align:right}tr.is-active .eta-label{color:var(--active-green);opacity:.7}.legend{margin-top:1.25rem;display:flex;justify-content:center;gap:1.5rem}.legend span{display:flex;align-items:center;gap:.35rem;font-size:.68rem;color:var(--text-dim)}.legend i{display:block;width:14px;height:3px;border-radius:2px}@media(min-width:640px){.container{max-width:540px;padding:2.5rem 2rem 4rem}.clock-box{width:300px;height:300px}}
+#community-footer {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-size: 0.8rem;
+    color: #888;
+    font-family: inherit;
+}
+
+#community-footer a {
+    color: inherit;
+    text-decoration: none;
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <header><h1>Event Timer</h1></header>
+
+  <div id="nextEta" class="next-eta"></div>
+
+  <div class="live-banner" id="liveBanner"></div>
+
+  <div class="tz-selector"><select id="tz"></select></div>
+
+  <div class="time-info">
+    <div class="local" id="tLocal"></div>
+    <div class="date" id="tDate"></div>
+    <div class="utc" id="tUTC"></div>
+  </div>
+
+  <div class="clock-wrap">
+    <div class="clock-box">
+      <svg class="clock-svg" viewBox="0 0 260 260" id="svg"></svg>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table class="ev-table">
+      <thead><tr><th>Event</th><th>Window</th><th>ETA</th></tr></thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+
+  <div class="legend">
+    <span><i style="background:var(--crimson)"></i>Crimson Moon</span>
+    <span><i style="background:var(--dragon)"></i>Dragon &amp; Spider</span>
+  </div>
+</div>
+
+<script>
+
+const SCHED = [
+  { name:'Crimson Moon',    t:'c', s:5,  e:6  },
+  { name:'Crimson Moon',    t:'c', s:13, e:14 },
+  { name:'Crimson Moon',    t:'c', s:21, e:22 },
+
+  { name:'Dragon & Spider', t:'d', s:0,  e:1  },
+  { name:'Dragon & Spider', t:'d', s:8,  e:9  },
+  { name:'Dragon & Spider', t:'d', s:16, e:17 },
+];
+const CUSTOM_EVENTS = [
+  // UTC 00:00 on specified dates
+  { name: 'Spider Gate Open',  t: 'd', date: Date.UTC(2026, 2, 9, 0, 0, 0) },
+  { name: 'Town Gates Open',   t: 'c', date: Date.UTC(2026, 2, 10, 0, 0, 0) },
+  { name: 'Dragon Gates Open', t: 'd', date: Date.UTC(2026, 2, 11, 0, 0, 0) }
+];
+
+const tzEl = document.getElementById('tz');
+const localTZ = Intl.DateTimeFormat().resolvedOptions().timeZone;
+Intl.supportedValuesOf('timeZone').forEach(z => {
+  const o = document.createElement('option');
+  o.value = z; o.textContent = z.replace(/_/g,' ');
+  if (z === localTZ) o.selected = true;
+  tzEl.appendChild(o);
+});
+
+const p2 = n => String(n).padStart(2,'0');
+
+function fmtCD(ms) {
+  if (ms <= 0) return '00:00:00';
+  const t = Math.floor(ms/1000);
+  const d = Math.floor(t / 86400);
+  const h = Math.floor((t % 86400) / 3600);
+  const m = Math.floor((t % 3600) / 60);
+  const s = t % 60;
+  
+  if (d > 0) {
+    return `${d}d ${p2(h)}:${p2(m)}:${p2(s)}`;
+  }
+  return `${p2(h)}:${p2(m)}:${p2(s)}`;
+}
+
+function getHMS(tz) {
+  const p = new Intl.DateTimeFormat('en-GB',{timeZone:tz,hour:'numeric',minute:'numeric',second:'numeric',hour12:false}).formatToParts(new Date());
+  const g = t => parseInt(p.find(x=>x.type===t)?.value||'0');
+  return {h:g('hour'),m:g('minute'),s:g('second')};
+}
+
+function getOffsetMin(tz) {
+  const p = new Intl.DateTimeFormat('en-US',{timeZone:tz,timeZoneName:'longOffset'}).formatToParts(new Date());
+  const v = p.find(x=>x.type==='timeZoneName')?.value||'+00:00';
+  const m = v.match(/([+-])(\d{2}):(\d{2})/);
+  if(!m) return 0;
+  return (m[1]==='+'?1:-1)*(parseInt(m[2])*60+parseInt(m[3]));
+}
+
+function windowLocal(sUTC, eUTC, tz) {
+  const n = new Date();
+  const a = new Date(Date.UTC(n.getUTCFullYear(),n.getUTCMonth(),n.getUTCDate(),sUTC,0));
+  const b = new Date(Date.UTC(n.getUTCFullYear(),n.getUTCMonth(),n.getUTCDate(),eUTC,0));
+  const f = d => d.toLocaleTimeString('en-US',{timeZone:tz,hour:'numeric',minute:'2-digit',hour12:true});
+  return `${f(a)} – ${f(b)}`;
+}
+
+function evState(ev) {
+  const n = new Date(), ms = n.getTime(), uh = n.getUTCHours();
+  const active = uh >= ev.s && uh < ev.e;
+  if (active) {
+    let end = Date.UTC(n.getUTCFullYear(),n.getUTCMonth(),n.getUTCDate(),ev.e,0,0);
+    let rem = end - ms; if(rem<0) rem+=864e5;
+    return {active:true, remaining:rem};
+  }
+  let start = Date.UTC(n.getUTCFullYear(),n.getUTCMonth(),n.getUTCDate(),ev.s,0,0);
+  if(start<=ms) start+=864e5;
+  return {active:false, remaining:start-ms};
+}
+
+function drawClock() {
+  const tz = tzEl.value, {h,m,s} = getHMS(tz);
+  const cx=130, cy=130;
+  const rTrack=118, rFace=100;
+
+  let svg = '';
+
+  // Outer ring background track
+  svg += `<circle cx="${cx}" cy="${cy}" r="${rTrack}" fill="none" stroke="#1a1a20" stroke-width="6" opacity="0.4"/>`;
+  // Inner face
+  svg += `<circle cx="${cx}" cy="${cy}" r="${rFace}" fill="#111114" stroke="#2a2a33" stroke-width="1"/>`;
+
+  const off = getOffsetMin(tz);
+
+  // Draw arcs on a 24-hour scale (Custom events are intentionally excluded here)
+  SCHED.forEach(ev => {
+    const col = ev.t === 'c' ? '#e03e4a' : '#d4a82a';
+    
+    let ls = ((ev.s*60+off)%1440+1440)%1440;
+    let le = ((ev.e*60+off)%1440+1440)%1440;
+
+    function arc24(startMin, endMin) {
+      const a1 = (startMin/1440)*360-90;
+      const a2 = (endMin/1440)*360-90;
+      let sw = a2 - a1; 
+      if (sw <= 0) sw += 360; 
+      const lg = sw > 180 ? 1 : 0;
+      const r1 = a1 * Math.PI/180;
+      const r2 = a2 * Math.PI/180;
+      svg += `<path d="M ${cx+rTrack*Math.cos(r1)} ${cy+rTrack*Math.sin(r1)} A ${rTrack} ${rTrack} 0 ${lg} 1 ${cx+rTrack*Math.cos(r2)} ${cy+rTrack*Math.sin(r2)}" fill="none" stroke="${col}" stroke-width="6" stroke-linecap="round" opacity="0.85"/>`;
+    }
+
+    if(le > ls) { arc24(ls, le); }
+    else { arc24(ls, 1440); arc24(0, le); }
+  });
+
+  // Ticks (96 ticks for 15-min intervals over 24 hours)
+  for(let i=0;i<96;i++){
+    const a=(i/96)*360-90, rd=a*Math.PI/180;
+    if(i%4===0){ // Hour marks
+      svg+=`<line x1="${cx+(rFace-2)*Math.cos(rd)}" y1="${cy+(rFace-2)*Math.sin(rd)}" x2="${cx+(rFace-10)*Math.cos(rd)}" y2="${cy+(rFace-10)*Math.sin(rd)}" stroke="#555" stroke-width="1.5" stroke-linecap="round"/>`;
+      const hr = i/4;
+      // Number every 3 hours for cleanliness
+      if (hr % 3 === 0) {
+        const n = hr === 0 ? 24 : hr;
+        const nr = rFace - 20;
+        svg+=`<text x="${cx+nr*Math.cos(rd)}" y="${cy+nr*Math.sin(rd)}" text-anchor="middle" dominant-baseline="central" fill="#666" font-family="'DM Mono',monospace" font-size="10">${n}</text>`;
+      }
+    } else { // 15-min sub-marks
+      svg+=`<line x1="${cx+(rFace-2)*Math.cos(rd)}" y1="${cy+(rFace-2)*Math.sin(rd)}" x2="${cx+(rFace-5)*Math.cos(rd)}" y2="${cy+(rFace-5)*Math.sin(rd)}" stroke="#2a2a33" stroke-width="1"/>`;
+    }
+  }
+
+  // Hour hand (24-hour cycle)
+  const ha=(h + m/60)/24*360-90, hr=ha*Math.PI/180;
+  svg+=`<line x1="${cx}" y1="${cy}" x2="${cx+46*Math.cos(hr)}" y2="${cy+46*Math.sin(hr)}" stroke="#e8e6e3" stroke-width="2.5" stroke-linecap="round"/>`;
+
+  // Minute hand (60-minute cycle)
+  const ma=(m+s/60)/60*360-90, mr=ma*Math.PI/180;
+  svg+=`<line x1="${cx}" y1="${cy}" x2="${cx+68*Math.cos(mr)}" y2="${cy+68*Math.sin(mr)}" stroke="#c8c5c0" stroke-width="1.8" stroke-linecap="round"/>`;
+
+  // Second hand
+  const sa=s/60*360-90, sr=sa*Math.PI/180;
+  svg+=`<line x1="${cx-10*Math.cos(sr)}" y1="${cy-10*Math.sin(sr)}" x2="${cx+76*Math.cos(sr)}" y2="${cy+76*Math.sin(sr)}" stroke="#e03e4a" stroke-width="0.8"/>`;
+  
+  // Center dots
+  svg+=`<circle cx="${cx}" cy="${cy}" r="3" fill="#e8e6e3"/>`;
+  svg+=`<circle cx="${cx}" cy="${cy}" r="1.5" fill="#e03e4a"/>`;
+
+  document.getElementById('svg').innerHTML = svg;
+}
+
+function updateInfo() {
+  const tz = tzEl.value, n = new Date();
+  document.getElementById('tLocal').textContent = n.toLocaleTimeString('en-US',{timeZone:tz,hour:'numeric',minute:'2-digit',second:'2-digit',hour12:true});
+  document.getElementById('tDate').textContent = n.toLocaleDateString('en-US',{timeZone:tz,weekday:'long',month:'long',day:'numeric',year:'numeric'});
+  document.getElementById('tUTC').textContent = `UTC  ${p2(n.getUTCHours())}:${p2(n.getUTCMinutes())}:${p2(n.getUTCSeconds())}`;
+}
+
+function updateNextEta() {
+  const el = document.getElementById('nextEta');
+  const rows = SCHED.map(ev => ({ ...ev, st: evState(ev) }));
+
+  // Find active ones first
+  const active = rows.filter(r => r.st.active);
+  if (active.length > 0) {
+    const a = active[0];
+    el.className = 'next-eta is-live';
+    el.innerHTML = `<span class="ne-label">Now Live</span><span class="ne-dot ${a.t}"></span><span class="ne-name">${a.name}</span><span class="ne-cd ${a.t}">ends ${fmtCD(a.st.remaining)}</span>`;
+    return;
+  }
+
+  // Soonest upcoming
+  const upcoming = rows.filter(r => !r.st.active).sort((a,b) => a.st.remaining - b.st.remaining);
+  if (upcoming.length > 0) {
+    const u = upcoming[0];
+    el.className = 'next-eta';
+    el.innerHTML = `<span class="ne-label">Next Event</span><span class="ne-dot ${u.t}"></span><span class="ne-name">${u.name}</span><span class="ne-cd ${u.t}">${fmtCD(u.st.remaining)}</span>`;
+  }
+}
+
+function updateTable() {
+  const tz = tzEl.value;
+  
+  // Daily Recurring Events
+  const recurringRows = SCHED.map(ev => ({...ev, st:evState(ev), isCustom: false}));
+  
+  // Custom Future Events
+  const msNow = new Date().getTime();
+  const customRows = CUSTOM_EVENTS.map(ev => {
+    const rem = ev.date - msNow;
+    return {
+      ...ev,
+      st: { 
+        active: rem <= 0 && rem > -3600000, // Show active for 1 hour after it starts
+        remaining: Math.max(0, rem) 
+      },
+      isCustom: true
+    };
+  }).filter(ev => ev.date > msNow - 3600000); // Filter out events that passed over an hour ago
+
+  // Merge and Sort
+  const allRows = [...recurringRows, ...customRows];
+  allRows.sort((a,b)=>{
+    if(a.st.active&&!b.st.active) return -1;
+    if(!a.st.active&&b.st.active) return 1;
+    return a.st.remaining-b.st.remaining;
+  });
+
+  document.getElementById('tbody').innerHTML = allRows.map(r=>{
+    const ac = r.st.active;
+    const cls = `${r.t==='c'?'cr':'dr'}${ac?' is-active':''}`;
+    
+    // Label and UI logic
+    let badge = ac ? '<span class="badge">live</span>' : '';
+    let lbl = ac ? 'ends in' : 'starts in';
+    let cd = ac ? `−${fmtCD(r.st.remaining)}` : fmtCD(r.st.remaining);
+    let windowStr = '';
+
+    if (r.isCustom) {
+      // For custom events, show the specific date and time in the user's selected timezone
+      windowStr = new Intl.DateTimeFormat('en-US', { 
+        timeZone: tz, month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true 
+      }).format(new Date(r.date));
+      
+      if (ac) {
+         badge = '<span class="badge">started</span>';
+         lbl = '';
+         cd = 'now';
+      }
+    } else {
+      windowStr = windowLocal(r.s, r.e, tz);
+    }
+
+    return `<tr class="${cls}">
+      <td><div class="name-cell"><span class="dot ${r.t}"></span>${r.name}${badge}</div></td>
+      <td><span class="window-cell">${windowStr}</span></td>
+      <td><span class="eta-label">${lbl}</span><span class="eta-cell ${r.t}">${cd}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+function updateBanner() {
+  const banner = document.getElementById('liveBanner');
+  const n = new Date(), uh = n.getUTCHours();
+  const activeEvents = SCHED.filter(ev => uh >= ev.s && uh < ev.e);
+
+  if (activeEvents.length === 0) {
+    banner.classList.remove('visible');
+    banner.innerHTML = '';
+    return;
+  }
+
+  banner.classList.add('visible');
+  banner.innerHTML = activeEvents.map(ev => {
+    const st = evState(ev);
+    const itemClass = ev.t === 'c' ? 'crimson-item' : 'dragon-item';
+    return `<div class="live-banner-item ${itemClass}">
+      <div class="live-left">
+        <span class="live-pulse"></span>
+        <span class="live-name">${ev.name}</span>
+        <span class="live-tag">live</span>
+      </div>
+      <span class="live-countdown">ends in ${fmtCD(st.remaining)}</span>
+    </div>`;
+  }).join('');
+}
+
+function tick(){ updateNextEta(); updateBanner(); updateInfo(); drawClock(); updateTable(); }
+tick(); setInterval(tick,1000);
+tzEl.addEventListener('change', tick);
+</script>
+<footer id="community-footer">
+  Original Event Timer by Monkey9 ❤️ • Maintained by the community
+</footer>
+</body>
+</html>
